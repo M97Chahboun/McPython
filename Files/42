@@ -1,0 +1,7 @@
+def FunctionWithArgs(*args):
+    print(args)
+    for var in args:
+        print(var)
+
+
+FunctionWithArgs(1,2,3,'mohammed')

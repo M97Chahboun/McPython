@@ -1,0 +1,15 @@
+class Str:
+    def __init__(self,str):
+        self.str = str
+    def Count(self,letter):
+        cnt = 0
+        for i in self.str:
+            if letter == i:
+                cnt+=1
+        return cnt
+
+StrPython = str('mohammed')
+print(StrPython.count('m'))
+
+MyStrModule = Str('mohammed')
+print(MyStrModule.Count('m'))

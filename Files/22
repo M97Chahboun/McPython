@@ -1,0 +1,4 @@
+FirstName = ['Mohammed','Ahmed','Khalid']
+LastName = ['CHAHBOUN','Rochdi','AADI']
+for Index,Name in enumerate(FirstName):
+    print(LastName[Index],Name)

@@ -1,0 +1,3 @@
+variable = 6
+assert variable>=10,'Enter Integer > Or = 10'
+print('variable > Or = 10')

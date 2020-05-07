@@ -1,0 +1,3 @@
+word = "Mohammed"
+for letter in word:
+    print(letter)

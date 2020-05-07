@@ -1,0 +1,9 @@
+class A:
+   def a():
+      print('Method a in Class A')
+class B(A):
+    def b():
+        print('Method b in Class B')
+print('Methods of Class B:',dir(B)[-2:])
+B.a()
+B.b()

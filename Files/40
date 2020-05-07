@@ -1,0 +1,3 @@
+def MyFirstFunction():
+    print('My First Function')
+MyFirstFunction()

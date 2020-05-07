@@ -1,0 +1,3 @@
+List = [1,3.14,'hello']
+print(List[1])
+print(dir(List))

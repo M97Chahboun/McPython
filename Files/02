@@ -1,0 +1,5 @@
+Integer = 2019
+Float = 3.14
+FloatToInteger = int(Float)
+IntegerToFloat = float(Integer)
+print('Float:',FloatToInteger,'\nInteger: ',IntegerToFloat)

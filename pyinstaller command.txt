@@ -1,0 +1,1 @@
+C:\Users\MNI\AppData\Local\Programs\Python\Python37-32\Scripts\pyinstaller.exe --onefile --windowed --icon=icons\icon.ico McPython.py

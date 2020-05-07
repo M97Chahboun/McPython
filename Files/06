@@ -1,0 +1,7 @@
+print('String Methods:\n',dir(str))
+print('Integer Methods:\n',dir(int))
+print('Float Methods:\n',dir(float))
+print('List Methods:\n',dir(list))
+print('Dict Methods:\n',dir(dict))
+print('Boolean Methods:\n',dir(bool))
+print('Tuple Methods:\n',dir(tuple))

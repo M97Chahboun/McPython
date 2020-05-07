@@ -1,0 +1,14 @@
+class Str:
+    def __init__(self,str):
+        self.str = str
+    def Find(self,word):
+        for i in range(len(self.str)):
+            if self.str[i:i+len(word)] == word:
+                return i
+
+
+StrPython = str('mohammed')
+print(StrPython.find('m'))
+
+MyStrModule = Str('mohammed')
+print(MyStrModule.Find('m'))

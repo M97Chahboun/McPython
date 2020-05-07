@@ -1,0 +1,8 @@
+def ReturnFunc(integer):
+    return integer * 2
+
+def PrintFunc(integer):
+    print(integer * 2)
+
+print(ReturnFunc(10))
+PrintFunc(10)

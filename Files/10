@@ -1,0 +1,11 @@
+VariableCondition = 2019
+if VariableCondition == 2019:
+    print('yes')
+else:
+    print('No')
+
+VariableCondition = 2018
+if VariableCondition == 2019:
+    print('yes')
+else:
+    print('No')

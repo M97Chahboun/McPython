@@ -1,0 +1,13 @@
+def Range(Integer):
+    RANGE = 0
+    while Integer!=RANGE:
+        RANGE+=1
+        yield RANGE
+
+MyRange = Range(10)
+for i in MyRange:
+    print('My Range Function:',i)
+
+RangePython = range(10)
+for i in RangePython:
+    print('Range python:',i)

@@ -1,0 +1,7 @@
+var = 0
+List = []
+while var != 11:
+    List.append(var)
+    var+=1
+
+print(List)

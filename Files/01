@@ -1,0 +1,4 @@
+String="hello world"
+print(String)
+print(String.upper())
+print(dir(String))

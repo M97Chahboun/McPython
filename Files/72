@@ -1,0 +1,6 @@
+def yieldFunc(integer):
+    for i in range(integer):
+        yield i
+
+for i in yieldFunc(10):
+    print(i)

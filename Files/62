@@ -1,0 +1,17 @@
+class A:
+   def __init__(self,arg):
+       print('Call Constractor A With Arg:',arg)
+   def a(self):
+      print('Method a in Class A')
+class B(A):
+    def __init__(self,arg):
+        super().__init__(arg)
+        """or A.__init__(self,arg)"""
+        print('Call Constractor B')
+    def b(self):
+        print('Method b in Class B')
+
+print('Methods of Class B:',dir(B)[-2:])
+ClassB = B('Hello')
+ClassB.b()
+ClassB.a()

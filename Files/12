@@ -1,0 +1,7 @@
+myname = "mohammed"
+if myname is "mohammed":
+    print("my name is mohammed")
+elif myname is "ahmed":
+    print("my name is mohammed")
+else:
+    print("myame is not mohammed")

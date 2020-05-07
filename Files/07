@@ -1,0 +1,16 @@
+"""module.method(args)"""
+String = "Mohammed"
+print(String.upper())
+Integer = 2019
+print(Integer.bit_length())
+Float = 3.14
+print(Float.is_integer())
+List = [2019,'Mohammed','Python',2019]
+print(List.count(2019))
+Dict = {"python":20,"Javascript and C":[15,12]}
+print('Javascript:',Dict["Javascript and C"][0])
+print('C:',Dict["Javascript and C"][1])
+Boolean = True
+print(Boolean.bit_length())
+Tuple = (1,2,"moha","med")
+print(Tuple.index('moha'))

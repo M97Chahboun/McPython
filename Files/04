@@ -1,0 +1,5 @@
+Dict = {'key1':'value1','key2':'value2'}
+print(Dict['key1'])
+print(Dict.values())
+print(Dict.keys())
+print(dir(Dict))

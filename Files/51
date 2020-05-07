@@ -1,0 +1,6 @@
+class ClassWithFunction:
+    def FunctionInClass(y):
+        print(y)
+        print('This is Function in class ClassWithFunction')
+
+ClassWithFunction.FunctionInClass('HELLO')

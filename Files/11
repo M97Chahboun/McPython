@@ -1,0 +1,12 @@
+var = 11
+var2 = 13
+if var >= 11:
+    print('var > or = 11')
+elif var != 11:
+    print('var is not 11')
+elif var == 11 and var2 == 13:
+    print('var is 11 and var2 = 13')
+elif var == 11 or var2 == 15:
+    print('var is 11 OR var2 = 13')
+else:
+    print("var < 11")

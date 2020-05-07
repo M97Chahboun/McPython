@@ -1,0 +1,8 @@
+class MyClass:
+    def __init__(self):
+        print('Call Constractor')
+    def Function(self):
+        print('Call Function')
+
+Class = MyClass()
+Class.Function()

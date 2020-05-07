@@ -1,0 +1,4 @@
+def FunctionWithArg(arg):
+    print(arg)
+
+FunctionWithArg('Hello World')

@@ -1,0 +1,7 @@
+var = 0
+Dict = {}
+while var != 11:
+    Dict['item %s'%(var)]=var
+    var+=1
+
+print(Dict)

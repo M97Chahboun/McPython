@@ -1,0 +1,4 @@
+class MyFirstClass:
+    VarIntoClass = 'Variable in class'
+
+print(MyFirstClass.VarIntoClass)

@@ -1,0 +1,5 @@
+def FunctionWithArgsDict(**args):
+    for i in args.keys():
+       print(i,args[i])
+
+FunctionWithArgsDict(First_Name='Mohammed',Last_Name='CHAHBOUN',age=22,Country='Morocco')

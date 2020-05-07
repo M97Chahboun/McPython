@@ -1,0 +1,13 @@
+class Str:
+    def __init__(self,str):
+        self.str = str
+    def FindAll(self,word):
+        result = []
+        for i in range(len(self.str)):
+            if self.str[i:i+len(word)] == word:
+                result.append(i)
+
+        return result
+
+MyStrModule = Str('mohammed')
+print(MyStrModule.FindAll('m'))
