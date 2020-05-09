@@ -11,6 +11,7 @@ from pyautogui import press, hotkey
 from functools import partial
 
 
+
 class StartTuto(QDialog):
     def __init__(self):
         super(StartTuto, self).__init__()
@@ -133,9 +134,7 @@ class TextEdit(QTextEdit):
         self._completer = None
         self.cha = {'(': ')', '[': ']', '{': ']', '"': '"',
                     "'": "'", '"""': '"""', "'''": "'''"}
-        self.lis = ['for', 'or', 'and', 'while', 'print', ' in', 'not', 'None', 'def', 'class', 'return', 'yield',
-                    'assert','int','double','String','Map','List','bool']
-
+        self.lis = open('Files/wordpy','r').readlines()#[i.strip('\n') for i in ]
     def setCompleter(self, c):
         if self._completer is not None:
             self._completer.activated.disconnect()
@@ -209,14 +208,26 @@ class TextEdit(QTextEdit):
         cr.setWidth(self._completer.popup().sizeHintForColumn(
             0) + self._completer.popup().verticalScrollBar().sizeHint().width())
         self._completer.complete(cr)
-        for u in self.lis:
-            if u == self.toPlainText()[-len(u):]:
-                Thread(target=self.mergeFormatOnWordOrSelection,
-                       args=(Qt.green,)).start()
-                break
-            else:
-                Thread(target=self.mergeFormatOnWordOrSelection,
-                       args=(Qt.white,)).start()
+        crsor = self.textCursor()
+        txt = self.toPlainText().split("\n")[crsor.blockNumber()].rfind(" ")
+        if txt == -1:
+            i = 0
+        else:
+            i = txt+1
+        if self.toPlainText().split("\n")[crsor.blockNumber()][i:]+'\n' in self.lis:
+             Thread(target=self.mergeFormatOnWordOrSelection,args=(Qt.blue,)).start()
+        else:
+            Thread(target=self.mergeFormatOnWordOrSelection,args=(Qt.white,)).start()
+        # for u in self.lis:
+
+        #     if u == self.toPlainText()[-len(u):]:
+        #         Thread(target=self.mergeFormatOnWordOrSelection,
+        #                args=(Qt.green,)).start()
+        #         break
+        #     else:
+        #         Thread(target=self.mergeFormatOnWordOrSelection,
+        #                args=(Qt.white,)).start()
+
 
 
 class Ui_Form(object):
@@ -225,7 +236,6 @@ class Ui_Form(object):
         size = screen.size()
         self.w = size.width()
         self.h = size.height()
-        print(self.w, self.h)
         Form.setObjectName("Form")
         Form.resize(self.w*0.682284, self.h*0.838541)
         Form.setWindowFlags(Qt.FramelessWindowHint)
@@ -352,7 +362,8 @@ class Ui_Form(object):
         self.doubleSpinBox.setAlignment(Qt.AlignCenter)
         self.doubleSpinBox.setDecimals(1)
         self.doubleSpinBox.setSingleStep(0.1)
-        self.doubleSpinBox.setProperty("value", 3.4)
+        self.doubleSpinBox.setProperty("value", 3.7)
+        self.doubleSpinBox.setValue(3.7)
         self.open = QPushButton(self.groupBox)
         self.btn.append(self.open)
         self.open.setGeometry(QRect(50, 8, 28, 28))
@@ -431,8 +442,7 @@ class Frame(QWidget, Ui_Form):
         self.file = 1
         
         self.new.clicked.connect(self.newfile)
-        self.tabWidget.tabCloseRequested.connect(self.rmvto)
-        self.tabWidget_2.tabCloseRequested.connect(self.rmvtt)
+        self.tabWidget.tabCloseRequested.connect(self.closeCode)
         self.pushButton.clicked.connect(self.close)
         self.open_2.clicked.connect(self.openfile)
         self.open.clicked.connect(self.savefile)
@@ -449,7 +459,10 @@ class Frame(QWidget, Ui_Form):
         self.Tab = []
         self.Text = []
         self.Result = []
+        self.Language = []
+        self.Completer = []
         self.co = ''
+        self.fileType = "Python file (*.py)"
         self.punctuation = """!$%&():"*/;<>?@[\]^_`|~"""
         self.auto = False
         self.ver = True
@@ -470,6 +483,8 @@ class Frame(QWidget, Ui_Form):
         super(Frame, self).mouseReleaseEvent(event)
 
     def openfile(self):
+        
+
         fname = QFileDialog.getOpenFileName(self, 'Open file',
                                             'c:\\', "Python file (*.py) ;;Dart file (*.dart)")
         if fname[0] != "":
@@ -478,8 +493,12 @@ class Frame(QWidget, Ui_Form):
             self.text.setPlainText(file)
 
     def savefile(self):
+        if self.Language[self.tabWidget.currentIndex()].currentText() == "Python":
+            self.fileType = "Python file (*.py)"
+        else:
+            self.fileType = "Dart file (*.dart)"
         fname = QFileDialog.getSaveFileName(self, 'Save file',
-                                            'c:\\untitle_%s' % (self.fileo), "Python file (*.py) ;;Dart file (*.dart)")
+                                            'c:\\untitle_%i' % (self.tabWidget.currentIndex()+1), self.fileType)
         ind = self.tabWidget.currentIndex()
         if fname[0] != "":
             open(fname[0], 'w').write(self.Text[ind].toPlainText())
@@ -497,7 +516,7 @@ class Frame(QWidget, Ui_Form):
         self.anim.setEndValue(QRect(0, y, 941, 41))
         self.anim.start()
 
-    def rmvto(self, i):
+    def closeCode(self, i):
         self.tabWidget.removeTab(i)
         self.Tab.remove(self.Tab[i])
         self.Text.remove(self.Text[i])
@@ -506,10 +525,9 @@ class Frame(QWidget, Ui_Form):
         if len(self.Tab) == 0:
             self.run.setEnabled(False)
             self.open.setEnabled(False)
-            for tb in range(len(self.Result)):
-                self.tabWidget_2.removeTab(tb)
+        self.closeDebug(i)
 
-    def rmvtt(self, i):
+    def closeDebug(self, i):
         self.tabWidget_2.removeTab(i)
         self.indi -= 1
         self.groupBox.setGraphicsEffect(self.shadow)
@@ -528,8 +546,9 @@ class Frame(QWidget, Ui_Form):
                     self.text.insertPlainText("    " * re)
 
                 if event.text() in list(self.cha.keys()):
-                    self.text.insertPlainText(self.cha[event.text()])
-                    self.text.moveCursor(QTextCursor.Left)
+                    ind = self.tabWidget.currentIndex()
+                    self.Text[ind].insertPlainText(self.cha[event.text()])
+                    self.Text[ind].moveCursor(QTextCursor.Left)
                 if len(self.det) == 4:
                     self.det.remove(self.det[0])
 
@@ -554,9 +573,11 @@ class Frame(QWidget, Ui_Form):
         self.text.setGeometry(QRect(0, 0, self.w*0.674231, self.h*0.535156))
         self.completer = QCompleter(self)
         self.completer.setModel(self.getWord('Files/wordpy'))
-        
         self.text.setCompleter(self.completer)
-        self.language.activated[str].connect(self.changeL)
+        self.Completer.append(self.completer)
+        self.Language.append(self.language)
+        
+        
         font = QFont()
         font.setPointSize(15)
         self.text.setFont(font)
@@ -568,20 +589,28 @@ class Frame(QWidget, Ui_Form):
         self.text.setObjectName("text")
         self.tabWidget.addTab(self.tab_2, "Untitle_%i" % (self.file))
         self.tabWidget.setCurrentIndex(self.ind)
+        self.Language[-1].activated[str].connect(partial(self.changeL,index=self.tabWidget.currentIndex()))
         self.ind += 1
         self.file += 1
         self.tabWidget.setGraphicsEffect(self.shadow)
         self.text.setFocus(False)
+        self.newDebug()
 
-    def changeL(self, lang):
-        if self.language.currentText() == "Python":
-            self.completer.setModel(self.getWord('Files/wordpy'))
+
+    def changeL(self, lang,index):
+        if self.Language[index].currentText() == "Python":
+            self.Completer[index].setModel(self.getWord('Files/wordpy'))
+            self.Text[index].lis = open('Files/wordpy','r').readlines()
+           
+            
         else:
-            self.text.setText("""main(){
+            self.Text[index].setText("""main(){
 
 }""")       
-            self.text.moveCursor(QTextCursor.Up)
+            self.Text[index].moveCursor(QTextCursor.Up)
             self.completer.setModel(self.getWord('Files/worddart'))
+            self.Text[index].lis = open('Files/worddart','r').readlines()
+            
 
     def getWord(self, file):
         a = open(file, 'r').readlines()
@@ -594,11 +623,11 @@ class Frame(QWidget, Ui_Form):
         self.process.readyReadStandardOutput.connect(self.WorkReply)
         self.process.finished.connect(self.WorkFinished)
         version = self.doubleSpinBox.value()
-        if self.language.currentText().lower() == "python":
-            commande = f"{self.language.currentText().lower()[:2]} -{str(version)[:3]} Files/Run.py"
+        ind = self.tabWidget.currentIndex()
+        if self.Language[ind].currentText().lower() == "python":
+            commande = f"{self.Language[ind].currentText().lower()[:2]} -{str(version)[:3]} Files/Run"
         else:
-            commande = f"{self.language.currentText().lower()} Files/Run.py"
-            
+            commande = f"{self.Language[ind].currentText().lower()} Files/Run"
         self.process.start(commande, QIODevice.ReadWrite)
         self.process.waitForStarted()
         self.text.setFocus(True)
@@ -607,7 +636,8 @@ class Frame(QWidget, Ui_Form):
     def WorkReply(self):
         data = self.process.readAllStandardOutput().data()
         ch = str(data, encoding="utf-8").rstrip()
-        self.result.appendPlainText(ch)
+        ind = self.tabWidget.currentIndex()
+        self.Result[ind].setPlainText(ch)
 
     @pyqtSlot()
     def WorkFinished(self):
@@ -615,10 +645,9 @@ class Frame(QWidget, Ui_Form):
             self.process.readyReadStandardOutput.disconnect()
             self.process.finished.disconnect()
 
-    def Run(self):
-        self.tabWidget_2.setGraphicsEffect(self.shadow)
+    def newDebug(self):
         ind = self.tabWidget.currentIndex()
-        open('Files/Run.py', 'w').write(self.Text[ind].toPlainText())
+        self.tabWidget_2.setGraphicsEffect(self.shadow)
         self.tab = QWidget()
         self.tab.setObjectName("tab")
         self.result = QPlainTextEdit(self.tab)
@@ -634,11 +663,15 @@ class Frame(QWidget, Ui_Form):
                                   "border:0.5px rgb(35, 35, 35);\n"
                                   "}")
         self.result.setObjectName("result")
-        self.tabWidget_2.addTab(self.tab, "Untitle_%i" % (self.fileo))
-        self.tabWidget_2.setCurrentIndex(self.indi)
+        self.tabWidget_2.addTab(self.tab, "Untitle_%i" % (ind+1))
+        self.tabWidget_2.setCurrentIndex(self.ind)
+        
+    def Run(self):
+        ind = self.tabWidget.currentIndex()
+        open('Files/Run', 'w').write(self.Text[ind].toPlainText())
         self.RunS()
-        self.indi += 1
-        self.fileo += 1
+        self.tabWidget_2.setCurrentIndex(ind)
+
 
     def StartT(self):
         self.gm = {"{": "'", "}": '='}
